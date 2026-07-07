@@ -1,0 +1,47 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: notification-service
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.lvmh.*"
+        spring.json.type.mapping: "com.lvmh.order.event.OrderCreatedEvent:com.lvmh.notification.event.OrderCreatedEvent,com.lvmh.payment.event.PaymentCompletedEvent:com.lvmh.notification.event.PaymentCompletedEvent"
+      auto-offset-reset: earliest
+
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+    from: noreply@lvmh.com
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.lvmh.notification: DEBUG
