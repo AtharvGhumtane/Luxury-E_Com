@@ -194,7 +194,7 @@ public class OrderService {
     public void markOrderFailed(UUID orderId) {
         orderRepository.findById(orderId).ifPresent(order -> {
             order.setStatus(OrderStatus.FAILED);
-            Order updated = orderRepository.save(order);
+            orderRepository.save(order);
             log.warn("Order marked FAILED: {}", orderId);
 
             // Publish Saga compensation event to release stock
@@ -241,6 +241,7 @@ public class OrderService {
                 .shippingCity(o.getShippingCity())
                 .shippingCountry(o.getShippingCountry())
                 .shippingPostalCode(o.getShippingPostalCode())
+                .notes(o.getNotes())
                 .createdAt(o.getCreatedAt())
                 .updatedAt(o.getUpdatedAt())
                 .build();

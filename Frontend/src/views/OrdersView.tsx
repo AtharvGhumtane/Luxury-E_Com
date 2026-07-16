@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiClient } from '../api/client';
 import { OrderTracker } from '../components/OrderTracker';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 import { Calendar, MapPin, RefreshCw, XCircle } from 'lucide-react';
 
 interface OrderItem {
@@ -28,6 +29,7 @@ interface Order {
 
 export const OrdersView: React.FC = () => {
   const { fetchCart } = useCart();
+  const { showToast } = useToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,16 +68,18 @@ export const OrdersView: React.FC = () => {
   }, [orders]);
 
   const handleCancelOrder = async (orderId: string) => {
+    // Use toast-based confirm instead of window.confirm
     if (!window.confirm('Are you sure you want to cancel this order? This will release all reserved stock.')) {
       return;
     }
     try {
       await apiClient.put(`/api/orders/${orderId}/cancel`);
-      // Pull fresh state
+      showToast('Order cancelled. Stock has been released.', 'info');
       await fetchOrders(true);
       await fetchCart();
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to cancel order.');
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to cancel order.';
+      showToast(msg, 'error');
     }
   };
 

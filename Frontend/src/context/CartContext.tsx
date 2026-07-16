@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { apiClient } from '../api/client';
 
@@ -31,7 +31,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [itemCount, setItemCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     if (!isAuthenticated) return;
     setLoading(true);
     try {
@@ -45,7 +45,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  };
+  }, [isAuthenticated]);
 
   // Sync cart automatically on auth state changes
   useEffect(() => {
@@ -56,7 +56,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setTotalAmount(0);
       setItemCount(0);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, fetchCart]);
 
   const addToCart = async (item: Omit<CartItemType, 'quantity'>, quantity: number) => {
     if (!isAuthenticated) {

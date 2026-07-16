@@ -38,7 +38,7 @@ export const CheckoutView: React.FC = () => {
       const orderData = orderResponse.data;
 
       // 2. Clear Cart local Context
-      clearCart();
+      await clearCart();
 
       // 3. Immediately trigger simulated payment completion in the background
       await apiClient.post('/api/payments/initiate', {

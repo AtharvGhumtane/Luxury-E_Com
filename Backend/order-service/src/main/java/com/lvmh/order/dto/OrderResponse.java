@@ -20,6 +20,7 @@ public class OrderResponse {
     private String shippingCity;
     private String shippingCountry;
     private String shippingPostalCode;
+    private String notes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

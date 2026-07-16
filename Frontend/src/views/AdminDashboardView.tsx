@@ -13,6 +13,7 @@ import {
   Sparkles,
   Layers
 } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 interface Product {
   id: string;
@@ -51,6 +52,8 @@ export const AdminDashboardView: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   
+  const { showToast } = useToast();
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,7 +91,7 @@ export const AdminDashboardView: React.FC = () => {
             availableQuantity: invRes.data.availableQuantity,
             reservedQuantity: invRes.data.reservedQuantity 
           };
-        } catch (err) {
+        } catch (_err) {
           return { ...p, availableQuantity: 0, reservedQuantity: 0 };
         }
       }));
@@ -192,9 +195,10 @@ export const AdminDashboardView: React.FC = () => {
     }
     try {
       await apiClient.delete(`/api/products/${productId}`);
+      showToast('Product soft-deleted successfully.', 'success');
       fetchData();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to delete product.');
+      showToast(err.response?.data?.message || 'Failed to delete product.', 'error');
     }
   };
 
