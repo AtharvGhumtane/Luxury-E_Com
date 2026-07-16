@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { WishlistProduct } from './WishlistContext';
+import { type WishlistProduct } from './WishlistContext';
 
 // Reuse WishlistProduct shape since they share the same product fields
 export type RecentProduct = WishlistProduct;

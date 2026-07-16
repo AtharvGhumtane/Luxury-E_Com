@@ -106,6 +106,9 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
+        // Step 5: Clear cart
+        cartService.clearCart(userId);
+
         // Step 6: Publish Saga start event
         List<OrderCreatedEvent.OrderItem> eventItems = cartItems.stream()
                 .map(i -> OrderCreatedEvent.OrderItem.builder()
