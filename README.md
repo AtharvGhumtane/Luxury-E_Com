@@ -108,6 +108,31 @@ graph TD
 
 ---
 
+## ✨ Premium Features & Enhancements
+
+We implemented a collection of premium UX enhancements and core platform upgrades:
+
+### 1. Curated Wishlist Registry 🖤
+- Added interactive heart toggle buttons to all product cards and product detail views.
+- Included a dedicated luxury Wishlist drawer with options to "Move to Cart" or "Remove", persistent across sessions via `localStorage`.
+
+### 2. Recently Viewed Products 🕰️
+- Tracks the last 6 products browsed in detail.
+- Displayed as a premium horizontal scroll strip at the bottom of the catalog page, creating an immersive browsing loop.
+
+### 3. Animated Toast System 🍞
+- Replaces raw browser `alert()` popups with custom-designed context-based toast notifications (Gold/Success, Amber/Warning, Indigo/Info, Red/Error) matching the premium LVMH aesthetic.
+
+### 4. Theme Preference Persistence 🌗
+- Saves light/dark mode choices to `localStorage` to survive page reloads and maintain the client's preferred styling.
+
+### 5. Architectural & Stability Fixes 🛠️
+- **Order Notes Serialization**: Resolved a bug where delivery instructions/notes were missing from order responses, mapping them correctly from the PostgreSQL model to the `OrderResponse` DTO.
+- **Race Condition Mitigated**: Added asynchronous synchronization on cart actions (resolved missing `await` on `clearCart()`).
+- **Stable Hook Closures**: Wrapped async cart syncing methods in `useCallback` to clean up lint closures.
+
+---
+
 ## 🚀 Instructions for Starting the Web Application
 
 Follow these steps to run both the backend microservices and frontend web server locally.
