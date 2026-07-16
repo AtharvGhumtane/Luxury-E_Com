@@ -92,7 +92,7 @@ graph TD
 | **Product Service** | `8083` | Catalogs luxury goods. Performs high-speed searching using Elasticsearch and caches product details using Redis. |
 | **Inventory Service** | `8084` | Manages stock allocation and participates in checkout Saga transactions. |
 | **Order Service** | `8085` | Handles order state, checkout workflow, shopping carts, and orchestrates Saga events. |
-| **Payment Service** | `8086` | Integrates Stripe to process payments and verify transactions via webhooks. |
+| **Payment Service** | `8086` | Simulates payment capture and processes virtual checkout transactions (Pay on Delivery). |
 | **Notification Service** | `8087` | Listens to Kafka event topics and sends email confirmations to users. |
 | **Config Server** | `8888` | Central repository for external configurations. |
 | **Discovery Server** | `8761` | Eureka Server for service registration and dynamic resolution. |
@@ -157,8 +157,6 @@ cd Backend
 
 # Create a .env file (or add these keys to your environment)
 JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-STRIPE_SECRET_KEY=sk_test_YOUR_STRIPE_SECRET_KEY
-STRIPE_WEBHOOK_SECRET=whsec_YOUR_STRIPE_WEBHOOK_SECRET
 ```
 
 ---
@@ -222,15 +220,4 @@ Once everything is started, you can access these monitoring endpoints:
   - Order: [http://localhost:8085/swagger-ui.html](http://localhost:8085/swagger-ui.html)
   - Payment: [http://localhost:8086/swagger-ui.html](http://localhost:8086/swagger-ui.html)
 
----
 
-## 🐳 Processing Stripe Payments (Local Development)
-
-To test Stripe checkout payments locally:
-1. Download and install the [Stripe CLI](https://stripe.com/docs/stripe-cli).
-2. Authenticate the CLI: `stripe login`
-3. Forward Stripe events to the local payment service webhook:
-   ```bash
-   stripe listen --forward-to localhost:8086/api/payments/webhook
-   ```
-4. Copy the webhook signing secret returned by the CLI and use it as `STRIPE_WEBHOOK_SECRET` in your backend configuration.

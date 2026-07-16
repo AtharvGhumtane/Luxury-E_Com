@@ -32,7 +32,7 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({ status }) => {
   const steps = [
     { label: 'Order Placed', desc: 'Saga Start' },
     { label: 'Stock Reserved', desc: 'SKU Reservation' },
-    { label: 'Payment Intent', desc: 'Stripe Settlement' },
+    { label: 'Payment Intent', desc: 'Virtual Settlement' },
     { label: status === 'CANCELLED' ? 'Reverted' : 'Order Finished', desc: status === 'CANCELLED' ? 'Stock Released' : 'Completed' }
   ];
 
