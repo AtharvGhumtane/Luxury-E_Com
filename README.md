@@ -130,6 +130,7 @@ We implemented a collection of premium UX enhancements and core platform upgrade
 - **Order Notes Serialization**: Resolved a bug where delivery instructions/notes were missing from order responses, mapping them correctly from the PostgreSQL model to the `OrderResponse` DTO.
 - **Race Condition Mitigated**: Added asynchronous synchronization on cart actions (resolved missing `await` on `clearCart()`).
 - **Stable Hook Closures**: Wrapped async cart syncing methods in `useCallback` to clean up lint closures.
+- **Saga Cart Clearing Fixed**: Resolved a bug where customer carts in Redis were not cleared upon checkout, calling `clearCart(userId)` immediately after order persistence.
 
 ---
 
